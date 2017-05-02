@@ -13,11 +13,13 @@
     <script>
         var stompClient = null;
 
+        const chatId = window.location.pathname.split('/')[2];
+
         function connect() {
             var socket = new SockJS('/newMessage');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
-                stompClient.subscribe('/topic/newMessage', function(message){
+            stompClient.connect({}, function (frame) {
+                stompClient.subscribe('/chat/' + chatId, function (message) {
                     refreshMessages(JSON.parse(JSON.parse(message.body).content));
                 });
             });
@@ -31,29 +33,29 @@
 
         function refreshMessages(messages) {
             $(".media-list").html("");
-            $.each(messages.reverse(), function(i, message) {
+            $.each(messages, function (i, message) {
                 $(".media-list").append('<li class="media"><div class="media-body"><div class="media"><div class="media-body">'
-                + message.text + '<br/><small class="text-muted">' + message.author + ' | ' + new Date(message.createDate) + '</small><hr/></div></div></div></li>');
+                    + message.text + '<br/><small class="text-muted">' + message.author + ' | ' + new Date(message.createDate) + '</small><hr/></div></div></div></li>');
             });
         }
 
-        $(function(){
+        $(function () {
 
             if (typeof $.cookie("realtime-chat-nickname") === 'undefined') {
                 window.location = "/login"
             } else {
                 connect();
-                $.get("/messages", function (messages) {
+                var path = "/chat/" + chatId + "/messages";
+                $.get(path, function (messages) {
                     refreshMessages(messages)
                 });
 
-                $("#sendMessage").on("click", function() {
+                $("#sendMessage").on("click", function () {
                     sendMessage()
                 });
 
-                $('#messageText').keyup(function(e){
-                    if(e.keyCode == 13)
-                    {
+                $('#messageText').keyup(function (e) {
+                    if (e.keyCode == 13) {
                         sendMessage();
                     }
                 });
@@ -65,10 +67,14 @@
                 var message = $("#messageText").val();
                 var author = $.cookie("realtime-chat-nickname");
 
-                stompClient.send("/app/newMessage", {}, JSON.stringify({ 'text': message, 'author': author}));
+                var path = "/app/newMessage/" + chatId;
+                stompClient.send(path, {}, JSON.stringify({
+                    'text': message,
+                    'author': author
+                }));
 
                 $("#messageText").val("")
-                $container.animate({ scrollTop: $container[0].scrollHeight }, "slow");
+                $container.animate({scrollTop: $container[0].scrollHeight}, "slow");
 
             }
         })
@@ -77,11 +83,12 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
     <style type="text/css">
         .fixed-panel {
-        min-height: 500px;
-        max-height: 500px;
+            min-height: 500px;
+            max-height: 500px;
         }
+
         .media-list {
-        overflow: auto;
+            overflow: auto;
         }
     </style>
 </head>
@@ -102,9 +109,11 @@
                 </div>
                 <div class="panel-footer">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Enter Message" id="messageText" autofocus=""/>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-info" type="button" id="sendMessage">SEND <span class="glyphicon glyphicon-send"></span></button>
+                        <input type="text" class="form-control" placeholder="Enter Message" id="messageText"
+                               autofocus=""/>
+                        <span class="input-group-btn">
+                                        <button class="btn btn-info" type="button" id="sendMessage">SEND <span
+                                                class="glyphicon glyphicon-send"></span></button>
                                     </span>
                     </div>
                 </div>

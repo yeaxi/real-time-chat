@@ -3,45 +3,35 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.2.RELEASE")
     }
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
-apply plugin: 'war'
+apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'realtime-chat'
-    version =  '0.1.0'
+    version =  '0.0.1'
 }
 
-war {
-    baseName = 'ROOT'
-}
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("org.springframework:spring-messaging")
-    testCompile("junit:junit")
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }

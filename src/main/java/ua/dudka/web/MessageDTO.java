@@ -1,13 +1,10 @@
-package realtime.message;
+package ua.dudka.web;
 
-/**
- * @author huseyinbabal
- */
-public class ChatMessage {
+public class MessageDTO {
 
     private String content;
 
-    public ChatMessage(String content) {
+    public MessageDTO(String content) {
         this.content = content;
     }
 

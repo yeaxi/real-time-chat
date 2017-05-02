@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
 <head lang="en">
     <meta charset="UTF-8"/>
     <title></title>
@@ -7,15 +7,15 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script>
-        $(function(){
+        $(function () {
             if ($.cookie("realtime-chat-nickname")) {
-                window.location = "/chat"
+                window.location = "/chat/" + [[${id}]]
             } else {
-                $("#frm-login").submit(function(event) {
+                $("#frm-login").submit(function (event) {
                     event.preventDefault();
                     if ($("#nickname").val() !== '') {
                         $.cookie("realtime-chat-nickname", $("#nickname").val());
-                        window.location = "/chat";
+                        window.location = "/chat/" + [[${id}]];
                     }
                 })
             }
@@ -36,7 +36,8 @@
                     <form role="form" id="frm-login">
                         <fieldset>
                             <div class="form-group">
-                                <input class="form-control" placeholder="Enter Nickname" name="nickname" id="nickname" type="text" autofocus="" required=""/>
+                                <input class="form-control" placeholder="Enter Nickname" name="nickname" id="nickname"
+                                       type="text" autofocus="" required=""/>
                             </div>
                             <button type="submit" class="btn btn-lg btn-success btn-block">Enter Chat</button>
                         </fieldset>

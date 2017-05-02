@@ -1,25 +1,18 @@
-package realtime.domain;
-
-import org.springframework.data.annotation.Id;
+package ua.dudka.domain;
 
 import java.util.Date;
 
-/**
- * @author huseyinbabal
- */
-public class ChatMessageModel {
+public class Message {
 
-    @Id
-    private String id;
 
     private String text;
     private String author;
     private Date createDate;
 
-    public ChatMessageModel() {
+    public Message() {
     }
 
-    public ChatMessageModel(String text, String author, Date createDate) {
+    public Message(String text, String author, Date createDate) {
         this.text = text;
         this.author = author;
         this.createDate = createDate;
@@ -52,8 +45,7 @@ public class ChatMessageModel {
     @Override
     public String toString() {
         return "{" +
-                "\"id\":\"" + id + '\"' +
-                ",\"text\":\"" + text + '\"' +
+                "\"text\":\"" + text + '\"' +
                 ",\"author\":\"" + author + '\"' +
                 ",\"createDate\":\"" + createDate + "\"" +
                 '}';

@@ -1,2 +1,2 @@
 # RealtimeChat
-Realtime Chat Application with ModulusIO, Spring Boot, Websockets, and MongoDB
+Realtime Chat Application with Spring Boot, Web-sockets, and MongoDB
